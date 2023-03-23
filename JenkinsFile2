@@ -1,29 +1,28 @@
 pipeline
-{ 
-  agent any
-  stages
-   {
-    stage('ContinuousDownload')
-	 {
-	  steps
-	   {
-	    git 'https://github.com/prasadcloud/maven2.git'
-		}
-	 }
-	 stage('ContinuousBuild')
-	 {
-	  steps
-	   {
-	    sh 'mvn package'
-		}
-	 }
-	 stage('ContinuousDeploy')
-	 {
-	  steps
-	   {
-	    sh 'scp /var/lib/jenkins/workspace/DeclarativePipeline2/webapp/target/webapp.war ubuntu@172.31.13.164:/var/lib/tomcat9/webapps/testapp7.war'
-
-		}
-	 }
-    }
- }
+{
+    agent any
+    stages
+    {
+     stage('contiunousDownload')
+     {
+         steps
+         {
+             git 'https://github.com/Kjjadhav45/maven.git'
+         }
+     }
+      stage('contiunousBuild')
+     {
+         steps
+         {
+             sh 'mvn package'
+         }
+     }
+     stage('ContinuousDeploy')
+     {
+         steps
+         {
+              deploy adapters: [tomcat9(credentialsId: '9d14b8d2-7448-4cee-bd32-58982ffd0a2e', path: '', url: 'http://172.31.32.223:8080')], contextPath: 'context1', war: '**/*.war' 
+         }
+     }
+   }
+}
